@@ -2,10 +2,11 @@ from Bio.SeqUtils import ProtParam
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from acppred.utils import ALLOWED_AMINOACIDS
 import pandas as pd
 import pickle
 
-class Model:
+class Model: 
 
     def __init__(self, estimator, positive_peptides, negative_peptides):
         """
@@ -33,6 +34,7 @@ class Model:
         X_transform = []
 
         for peptide in X:
+            peptide = ''.join([aminoacid for aminoacid in peptide.upper() if aminoacid in ALLOWED_AMINOACIDS])
             aa_percent = ProtParam.ProteinAnalysis(peptide).get_amino_acids_percent()
             X_transform.append(aa_percent)
 
